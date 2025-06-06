@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Draggable Navigation Menu </title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="toggle-btn">
+        <i class='bx bx-plus'></i>
+      </div>
+      <span style="--i:1;">
+        <a href="#"><i class='bx bxs-home'></i></a>
+      </span>
+      <span style="--i:2;">
+        <a href="#"><i class='bx bxs-camera'></i></a>
+      </span>
+      <span style="--i:3;">
+        <a href="#"><i class='bx bxs-alarm' ></i></a>
+      </span>
+      <span style="--i:4;">
+        <a href="#"><i class='bx bxs-map' ></i></a>
+      </span>
+      <span style="--i:5;">
+        <a href="#"><i class='bx bxs-cog' ></i></a>
+      </span>
+    </div>
+  </nav>
+ <script>
+  const nav = document.querySelector("nav");
+  const toggleBtn = document.querySelector(".toggle-btn");
+
+  // Toggle open/close
+  toggleBtn.onclick = () => {
+    nav.classList.toggle("open");
+  };
+
+  // Dragging functionality
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  nav.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    offsetX = e.clientX - nav.offsetLeft;
+    offsetY = e.clientY - nav.offsetTop;
+    nav.style.cursor = "grabbing";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (isDragging) {
+      nav.style.left = `${e.clientX - offsetX}px`;
+      nav.style.top = `${e.clientY - offsetY}px`;
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    isDragging = false;
+    nav.style.cursor = "grab";
+  });
+</script>
+
+</body>
+</html>
