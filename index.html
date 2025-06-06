@@ -31,7 +31,7 @@
       </span>
     </div>
   </nav>
- <script>
+<script>
   const nav = document.querySelector("nav");
   const toggleBtn = document.querySelector(".toggle-btn");
 
@@ -40,29 +40,51 @@
     nav.classList.toggle("open");
   };
 
-  // Dragging functionality
+  // Dragging with left mouse button
   let isDragging = false;
   let offsetX, offsetY;
 
   nav.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    offsetX = e.clientX - nav.offsetLeft;
-    offsetY = e.clientY - nav.offsetTop;
-    nav.style.cursor = "grabbing";
+    if (e.button === 0) { // Left click
+      isDragging = true;
+      offsetX = e.clientX - nav.offsetLeft;
+      offsetY = e.clientY - nav.offsetTop;
+      nav.style.cursor = "grabbing";
+    }
   });
 
   document.addEventListener("mousemove", (e) => {
     if (isDragging) {
       nav.style.left = `${e.clientX - offsetX}px`;
       nav.style.top = `${e.clientY - offsetY}px`;
+    } else if (isRotating) {
+      const dx = e.clientX - centerX;
+      const dy = e.clientY - centerY;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      nav.style.transform = `rotate(${angle}deg)`;
     }
   });
 
   document.addEventListener("mouseup", () => {
     isDragging = false;
+    isRotating = false;
     nav.style.cursor = "grab";
   });
+
+  // Right-click rotation
+  let isRotating = false;
+  let centerX, centerY;
+
+  nav.addEventListener("contextmenu", (e) => {
+    e.preventDefault(); // Disable context menu
+    isRotating = true;
+    const rect = nav.getBoundingClientRect();
+    centerX = rect.left + rect.width / 2;
+    centerY = rect.top + rect.height / 2;
+    nav.style.cursor = "crosshair";
+  });
 </script>
+
 
 </body>
 </html>
